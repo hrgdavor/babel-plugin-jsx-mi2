@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-jsx-mi2",
-  "version": "1.0.7",
-  "description": "Babel plugin for simple JSX to JS transformation",
+  "version": "1.0.0",
+  "description": "Babel plugin for JSX to JS transformation for mi2js library",
   "main": "index.js",
   "unpkg": "dist/babel-plugin-jsx-mi2.min.js",
   "files": [
@@ -36,9 +36,6 @@
     "url": "https://hrgdavor/babel-plugin-jsx-mi2/issues"
   },
   "homepage": "https://hrgdavor/babel-plugin-jsx-mi2#readme",
-  "dependencies": {
-    "karma-phantomjs-launcher": "^1.0.4"
-  },
   "peerDependencies": {
     "babel-plugin-syntax-jsx": "^6.8.0"
   },
