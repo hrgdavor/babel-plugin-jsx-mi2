@@ -10,6 +10,7 @@ describe('babel-plugin-jsx-simple', () => {
   it('should spread attribs', () => {
     const sth = {name:'Joe'};
     const vnode = render(h => <div {...sth}>test</div>)
+    
     expect(vnode.tag).toEqual('div')
     expect(vnode.children[0]).toEqual('test')
     expect(vnode.attr.name).toEqual('Joe')
