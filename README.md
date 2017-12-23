@@ -1,4 +1,4 @@
-# babel-plugin-jsx-mi2 [![CircleCI](https://img.shields.io/circleci/project/hrgdavor/babel-plugin-jsx-mi2.svg?maxAge=2592005)](https://circleci.com/gh/hrgdavor/babel-plugin-jsx-mi2)
+# babel-plugin-jsx-mi2 [![CircleCI](https://img.shields.io/circleci/project/hrgdavor/babel-plugin-jsx-mi2.svg?maxAge=2592006)](https://circleci.com/gh/hrgdavor/babel-plugin-jsx-mi2)
 
 > Babel plugin for JSX to JS transformation for [mi2js](https://github.com/hrgdavor/mi2js) library.
 
