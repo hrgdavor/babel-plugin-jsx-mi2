@@ -2,7 +2,7 @@
 
 > Babel plugin for JSX to JS transformation for [mi2js](https://github.com/hrgdavor/mi2js) library.
 
-Based on [babel-plugin-transform-simple](https://github.com/hrgdavor/babel-plugin-jsx-mi2)
+Based on [babel-plugin-transform-simple](https://github.com/hrgdavor/babel-plugin-transform-simple)
 
 ### What is JSX all about(the basic idea)
 
