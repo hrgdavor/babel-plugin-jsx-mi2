@@ -1,6 +1,6 @@
 
 
-describe('babel-plugin-jsx-simple', () => {
+describe('babel-plugin-jsx-mi2', () => {
   it('should contain text', () => {
     const vnode = render(h => <div>test</div>)
     expect(vnode.tag).toEqual('div')
