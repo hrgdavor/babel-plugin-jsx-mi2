@@ -1,8 +1,13 @@
 # babel-plugin-jsx-mi2 [![CircleCI](https://img.shields.io/circleci/project/hrgdavor/babel-plugin-jsx-mi2.svg?maxAge=2592006)](https://circleci.com/gh/hrgdavor/babel-plugin-jsx-mi2)
 
-> Babel plugin for JSX to JS transformation for [mi2js](https://github.com/hrgdavor/mi2js) library.
+> Babel plugin for JSX to JS transformation
 
 Based on [babel-plugin-transform-simple](https://github.com/hrgdavor/babel-plugin-transform-simple)
+
+Combined with [babel-plugin-jsx-inject](https://github.com/hrgdavor/babel-plugin-jsx-inject)
+and [babel-plugin-translate-mi2](https://github.com/hrgdavor/babel-plugin-translate-mi2)
+
+Used in [mi2js](https://github.com/hrgdavor/mi2js) library.
 
 ### What is JSX all about(the basic idea)
 
