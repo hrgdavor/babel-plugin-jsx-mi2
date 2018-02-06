@@ -32,7 +32,7 @@ module.exports = function (babel) {
 
   function buildElementCall (path, state) {
     // extra option to add arrow around every js expression that is a child
-    replaceWithArrow(path.parent.children);
+    replaceWithArrow(path.parent.children, state);
     path.parent.children = t.react.buildChildren(path.parent)
 
     var tagExpr = convertJSXIdentifier(path.node.name, path.node)
@@ -84,7 +84,7 @@ module.exports = function (babel) {
    * props and spreads as they are found.
    */
 
-  function buildOpeningElementAttributes (attribs) {
+  function buildOpeningElementAttributes (attribs, state) {
     var _props = []
 
     while (attribs.length) {
@@ -93,7 +93,7 @@ module.exports = function (babel) {
         prop.argument._isSpread = true
         _props.push(t.spreadProperty(prop.argument))
       } else {
-        _props.push(convertAttribute(prop))
+        _props.push(convertAttribute(prop, state))
       }
     }
 
@@ -102,7 +102,7 @@ module.exports = function (babel) {
     return attribs
   }
 
-  function convertAttribute (node) {
+  function convertAttribute (node, state) {
     var value = convertAttributeValue(node.value || t.booleanLiteral(true))
     if (t.isStringLiteral(value) && !t.isJSXExpressionContainer(node.value)) {
       value.value = value.value.replace(/\n\s+/g, ' ')
@@ -116,6 +116,8 @@ module.exports = function (babel) {
     // add arrow around every attribute value that is js expression
     if(t.isJSXExpressionContainer(node.value)){
       if(isRefIdentifier(value)){
+        // do nothing
+      }else if(state.opts.staticTranslation && isTranslationCall(value)){
         // do nothing
       }else if(isRefCall(value)){
         value = value.arguments[0];
@@ -140,12 +142,17 @@ module.exports = function (babel) {
   function isRefCall(expr){
     return t.isCallExpression(expr) && expr.callee && expr.callee.name == '$ref';
   }
+  function isTranslationCall(expr){
+    return t.isCallExpression(expr) && expr.callee && expr.callee.name == 't';
+  }
 
-  function replaceWithArrow (ch) {
+  function replaceWithArrow (ch, state) {
     for(var i=0; i<ch.length; i++){
       if(t.isJSXExpressionContainer(ch[i])){
         var expr = ch[i].expression;
         if(isRefIdentifier(expr)){
+          // leave as is
+        }else if(state.opts.staticTranslation && isTranslationCall(expr)){
           // leave as is
         }else if(isRefCall(expr)){
           // single liner using splice to insert all elements in place. This works for all array sizes(0,1,...)

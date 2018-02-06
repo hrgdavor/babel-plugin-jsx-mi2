@@ -1,0 +1,8 @@
+{
+  "retainLines": true,
+  "presets": ["env"],
+  "plugins": [
+  	["../index", {staticTranslation:true}]
+  ],
+  "ignore": ["node_modules"]
+}
