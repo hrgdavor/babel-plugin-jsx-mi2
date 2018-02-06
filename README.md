@@ -77,3 +77,17 @@ so the final result in HTML is:
 
 quick explanation: the JS expressions are wrapped in arrow function so they can be reevaluated later when state changes
 (for more details check the explanation in the library).
+
+### Translations using "t" function
+
+To call the translations immediately in the generated code (instead of wrapping in a function call) change the plugin definition from
+
+```
+"jsx-mi2"
+```
+
+to
+
+```
+["jsx-mi2", {staticTranslation:true}],
+```
