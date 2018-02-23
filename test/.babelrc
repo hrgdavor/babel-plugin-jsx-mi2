@@ -1,6 +1,6 @@
 {
   "retainLines": true,
   "presets": ["env"],
-  "plugins": ["../index"],
+  "plugins": [["../index", {forTemplate:true}]],
   "ignore": ["node_modules"]
 }

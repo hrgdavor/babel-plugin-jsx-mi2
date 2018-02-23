@@ -6,7 +6,7 @@ describe('babel-plugin-jsx-mi2', () => {
     return TRANS[code] || code;
   }
 
-  it('translate immediate', () => {
+  it('translate deferred', () => {// because global option in .babelrc
     const vnode = render(h => <div attr={t('city')}>{t('name')}</div>)
     expect(vnode.tag).toEqual('div')
     

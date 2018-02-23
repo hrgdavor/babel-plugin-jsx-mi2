@@ -16,7 +16,15 @@ module.exports = function (babel) {
         )
       },
       JSXElement: {
+        enter (path, state) {
+          state.dynamicData.templateStack = state.dynamicData.templateStack || [];
+          if(path.node.openingElement.name.name == 'template'){
+            state.dynamicData.templateStack.push(1);
+          }
+          state.dynamicData.__forTemplate = state.opts.forTemplate || state.dynamicData.templateStack.length;
+        },
         exit (path, state) {
+          var nodeName = path.node.openingElement.name.name;
           // turn tag into createElement call
           var callExpr = buildElementCall(path.get('openingElement'), state)
           if (path.node.children.length) {
@@ -25,6 +33,12 @@ module.exports = function (babel) {
             // if you want to create an array instead, do it here
           }
           path.replaceWith(t.inherits(callExpr, path.node))
+
+          if(nodeName == 'template'){
+            state.dynamicData.templateStack = state.dynamicData.templateStack || [];
+            state.dynamicData.templateStack.pop();
+            state.dynamicData.__forTemplate = state.opts.forTemplate || state.dynamicData.templateStack.length;
+          }
         }
       }
     }
@@ -117,12 +131,12 @@ module.exports = function (babel) {
     if(t.isJSXExpressionContainer(node.value)){
       if(isRefIdentifier(value)){
         // do nothing
-      }else if(state.opts.staticTranslation && isTranslationCall(value)){
-        // do nothing
       }else if(isRefCall(value)){
         value = value.arguments[0];
       }else{
-        value = t.arrowFunctionExpression([],value)
+        if(state.dynamicData.__forTemplate){
+          value = t.arrowFunctionExpression([],value)
+        }
       }
     }
     return t.inherits(t.objectProperty(node.name, value), node)
@@ -142,9 +156,6 @@ module.exports = function (babel) {
   function isRefCall(expr){
     return t.isCallExpression(expr) && expr.callee && expr.callee.name == '$ref';
   }
-  function isTranslationCall(expr){
-    return t.isCallExpression(expr) && expr.callee && expr.callee.name == 't';
-  }
 
   function replaceWithArrow (ch, state) {
     for(var i=0; i<ch.length; i++){
@@ -152,13 +163,13 @@ module.exports = function (babel) {
         var expr = ch[i].expression;
         if(isRefIdentifier(expr)){
           // leave as is
-        }else if(state.opts.staticTranslation && isTranslationCall(expr)){
-          // leave as is
         }else if(isRefCall(expr)){
           // single liner using splice to insert all elements in place. This works for all array sizes(0,1,...)
           ch.splice.apply(ch,[i,1].concat(expr.arguments));
         }else{
-          ch[i].expression = t.arrowFunctionExpression([],ch[i].expression)
+          if(state.dynamicData.__forTemplate){
+            ch[i].expression = t.arrowFunctionExpression([],ch[i].expression)
+          }
         }
       }
     }
