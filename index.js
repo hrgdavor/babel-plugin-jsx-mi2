@@ -15,13 +15,25 @@ module.exports = function (babel) {
           'For attributes like xlink:href, use xlinkHref instead.'
         )
       },
+      Program:{
+        enter (path, state) {
+          state.dynamicData.__forTemplate = state.opts.forTemplate;
+          
+          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl' != -1)){
+            updateStack(state, true);
+          }
+        },
+        exit (path, state) {
+          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl' != -1)){
+            updateStack(state, false);
+          }
+        }
+      },
       JSXElement: {
         enter (path, state) {
-          state.dynamicData.templateStack = state.dynamicData.templateStack || [];
           if(path.node.openingElement.name.name == 'template'){
-            state.dynamicData.templateStack.push(1);
+            updateStack(state, true);
           }
-          state.dynamicData.__forTemplate = state.opts.forTemplate || state.dynamicData.templateStack.length;
         },
         exit (path, state) {
           var nodeName = path.node.openingElement.name.name;
@@ -35,14 +47,25 @@ module.exports = function (babel) {
           path.replaceWith(t.inherits(callExpr, path.node))
 
           if(nodeName == 'template'){
-            state.dynamicData.templateStack = state.dynamicData.templateStack || [];
-            state.dynamicData.templateStack.pop();
-            state.dynamicData.__forTemplate = state.opts.forTemplate || state.dynamicData.templateStack.length;
+            updateStack(state, false);
           }
         }
       }
     }
   }
+
+  function updateStack(state, push){
+    state.dynamicData.templateStack = state.dynamicData.templateStack || [];
+
+    if(push){
+        state.dynamicData.templateStack.push(1);      
+    }else{
+        state.dynamicData.templateStack.pop();      
+    }
+
+    state.dynamicData.__forTemplate = state.opts.forTemplate || state.dynamicData.templateStack.length;
+  }
+
 
   function buildElementCall (path, state) {
     // extra option to add arrow around every js expression that is a child

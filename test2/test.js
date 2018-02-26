@@ -10,7 +10,6 @@ describe('babel-plugin-jsx-mi2', () => {
     let vnode = render(h => <template><div attr={t('city')}>{t('name')}</div></template>)
     vnode = vnode.children[0];
     expect(vnode.tag).toEqual('div')
-    
     // translated upon evaluation of the function
     expect(vnode.children[0]()).toEqual('Name')
     expect(vnode.attr.attr()).toEqual('City')
