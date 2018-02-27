@@ -19,12 +19,12 @@ module.exports = function (babel) {
         enter (path, state) {
           state.dynamicData.__forTemplate = state.opts.forTemplate;
           
-          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl' != -1)){
+          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl') != -1){
             updateStack(state, true);
           }
         },
         exit (path, state) {
-          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl' != -1)){
+          if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl') != -1){
             updateStack(state, false);
           }
         }
