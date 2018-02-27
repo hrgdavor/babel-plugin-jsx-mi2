@@ -152,7 +152,7 @@ module.exports = function (babel) {
 
     // add arrow around every attribute value that is js expression
     if(t.isJSXExpressionContainer(node.value)){
-      if(isRefIdentifier(value)){
+      if(isDoNotWrap(value, state)){
         // do nothing
       }else if(isRefCall(value)){
         value = value.arguments[0];
@@ -173,9 +173,11 @@ module.exports = function (babel) {
     }
   }
 
-  function isRefIdentifier(expr){
-    return t.isIdentifier(expr) && expr.name && expr.name[0] == '$';
+  function isDoNotWrap(expr, state){
+    return (t.isIdentifier(expr) && expr.name && expr.name[0] == '$')
+    || (state.opts.staticTranslation && t.isCallExpression(expr) && expr.callee && expr.callee.name == '$ref');
   }
+
   function isRefCall(expr){
     return t.isCallExpression(expr) && expr.callee && expr.callee.name == '$ref';
   }
@@ -184,7 +186,7 @@ module.exports = function (babel) {
     for(var i=0; i<ch.length; i++){
       if(t.isJSXExpressionContainer(ch[i])){
         var expr = ch[i].expression;
-        if(isRefIdentifier(expr)){
+        if(isDoNotWrap(expr, state)){
           // leave as is
         }else if(isRefCall(expr)){
           // single liner using splice to insert all elements in place. This works for all array sizes(0,1,...)
