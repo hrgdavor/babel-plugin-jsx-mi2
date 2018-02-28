@@ -3,6 +3,6 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circeci/node:8-stretch-browsers
+      - image: node:8-stretch-browsers
     steps:
       - checkout
