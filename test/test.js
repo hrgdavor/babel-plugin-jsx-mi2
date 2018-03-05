@@ -15,7 +15,17 @@ describe('babel-plugin-jsx-mi2', () => {
     expect(vnode.attr.attr()).toEqual('City')
   })
 
+  it('should not wrap delcared function', () => {
+    const vnode = render(h => <div>{function(){return 'test'}}</div>)
+    expect(vnode.tag).toEqual('div')
+    expect(vnode.children[0]()).toEqual('test')
+  })
 
+  it('should not wrap delcared arrow function', () => {
+    const vnode = render(h => <div>{()=>{return 'test2'}}</div>)
+    expect(vnode.tag).toEqual('div')
+    expect(vnode.children[0]()).toEqual('test2')
+  })
 
   it('should contain text', () => {
     const vnode = render(h => <div>test</div>)

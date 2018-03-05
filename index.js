@@ -174,8 +174,15 @@ module.exports = function (babel) {
   }
 
   function isDoNotWrap(expr, state){
-    return (t.isIdentifier(expr) && expr.name && expr.name[0] == '$')
-    || (state.opts.staticTranslation && t.isCallExpression(expr) && expr.callee && expr.callee.name == '$ref');
+    if(t.isFunctionExpression(expr)) return true;
+    
+    if(t.isIdentifier(expr) && expr.name && expr.name[0] == '$') return true;
+    
+    var isFcnCall = t.isCallExpression(expr);
+    
+    if(state.opts.staticTranslation && isFcnCall && expr.callee && expr.callee.name == '$ref') return true;
+    
+    return false;
   }
 
   function isRefCall(expr){
