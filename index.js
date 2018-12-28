@@ -175,6 +175,7 @@ module.exports = function (babel) {
 
   function isDoNotWrap(expr, state){
     if(t.isFunctionExpression(expr)) return true;
+    if(t.isArrowFunctionExpression(expr)) return true;
     
     if(t.isIdentifier(expr) && expr.name && expr.name[0] == '$') return true;
     
