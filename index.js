@@ -152,7 +152,14 @@ module.exports = function (babel) {
 
     // add arrow around every attribute value that is js expression
     if(t.isJSXExpressionContainer(node.value)){
-      if(isDoNotWrap(value, state)){
+      var name = node.name.name || node.name.value;
+      var staticAttr = isStaticAttr(name);
+
+      if(staticAttr){
+        node.name = t.stringLiteral(name.substring(0,name.length-1))
+      }
+
+      if(staticAttr || isDoNotWrap(value, state)){
         // do nothing
       }else if(isRefCall(value)){
         value = value.arguments[0];
@@ -171,6 +178,10 @@ module.exports = function (babel) {
     } else {
       return node
     }
+  }
+
+  function isStaticAttr(name, state){
+    return (name[name.length-1] == '$');
   }
 
   function isDoNotWrap(expr, state){
