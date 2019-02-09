@@ -11,8 +11,8 @@ describe('babel-plugin-jsx-mi2', () => {
     vnode = vnode.children[0];
     expect(vnode.tag).toEqual('div')
     // translated upon evaluation of the function
-    expect(vnode.children[0]()).toEqual('Name')
-    expect(vnode.attr.attr()).toEqual('City')
+    expect(vnode.children[0]).toEqual('Name')
+    expect(vnode.attr.attr).toEqual('City')
   })
 
   it('translate immediate', () => {
