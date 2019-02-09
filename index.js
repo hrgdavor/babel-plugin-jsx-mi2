@@ -192,7 +192,7 @@ module.exports = function (babel) {
     
     var isFcnCall = t.isCallExpression(expr);
     
-    if(state.opts.staticTranslation && isFcnCall && expr.callee && expr.callee.name == '$ref') return true;
+    if(state.opts.staticTranslation && isFcnCall && expr.callee && expr.callee.name == 't') return true;
     
     return false;
   }
