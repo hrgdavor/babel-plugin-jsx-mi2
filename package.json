@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-jsx-mi2",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Babel plugin for JSX to JS transformation for mi2js library",
   "main": "index.js",
   "unpkg": "dist/babel-plugin-jsx-mi2.min.js",
