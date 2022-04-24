@@ -17,6 +17,7 @@ module.exports = function (babel) {
       },
       Program:{
         enter (path, state) {
+          state.dynamicData = state.dynamicData || {}
           state.dynamicData.__forTemplate = state.opts.forTemplate;
           
           if(path.node.loc.filename && path.node.loc.filename.indexOf('.tpl') != -1){
